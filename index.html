@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <!-- <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"> -->
+        <title>Proyecto Equipo 03</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.js"></script>
+        <script src="js/OrbitControls.js"></script>
+        <script src="js/THREEx.KeyboardState.js"></script>
+	    <script src="js/THREEx.FullScreen.js"></script>
+	    <script src="js/THREEx.WindowResize.js"></script>
+        <style>
+            /*body {
+            background-color: #000000;
+            overflow: hidden;
+        }*/
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            top: 50px;
+        }
+
+        .score-container {
+            /*background-color: red;*/
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: transform 0.5s 4s;
+        }
+
+        .score-container #score {
+            color: white;
+            font-size: 8vh;
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+        }
+        </style>
+    </head>
+    <body>
+        <script src="js/index.js"></script>
+    </body>
+</html>
