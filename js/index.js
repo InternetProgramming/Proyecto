@@ -42,13 +42,6 @@ function init() {
  	THREEx.WindowResize(renderer, camera);
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    // geometry = new THREE.Geometry();
-    // geometry.vertices.push(new THREE.Vector3(-250, -1, -3000));
-    // geometry.vertices.push(new THREE.Vector3(-300, -1, 200));
-    // material = new THREE.LineBasicMaterial({
-    //     color: 0x6699FF, linewidth: 5, fog: true
-    // });
-
     //HIGHWAY LINES
     geometry = new THREE.Geometry();
     geometry.vertices.push(new THREE.Vector3(-250, -1, -3000));
@@ -68,8 +61,8 @@ function init() {
     movingCar = new THREE.Group();
 
     //WHEEL COMPONENTS
-    geometryWheel = new THREE.BoxBufferGeometry(60, 12, 12);
-	materialWheel = new THREE.MeshStandardMaterial({ color: 0x333333 });
+    geometryWheel = new THREE.BoxGeometry(60, 12, 12);
+	materialWheel = new THREE.MeshBasicMaterial({ color: 0x333333 });
 
 	//BACKWHEELS
 	backWheel = new THREE.Mesh(geometryWheel, materialWheel);
@@ -87,7 +80,7 @@ function init() {
 
   	//MAIN COMPONENTS
     var mainGeometry = new THREE.BoxGeometry(50, 25, 60, 5, 5, 5);
-    var mainMaterial = new THREE.MeshStandardMaterial({
+    var mainMaterial = new THREE.MeshLambertMaterial({
         color: 0x0094c6,
     });
 
@@ -102,7 +95,7 @@ function init() {
 	//CABIN WINDOWS
 	cabinWindow = new THREE.Mesh(
 		new THREE.BoxGeometry(28, 17, 25),
-		new THREE.MeshStandardMaterial({ color: 0x656565})
+		new THREE.MeshLambertMaterial({ color: 0x656565})
 	)
 	cabinWindow.position.x = 0;
 	cabinWindow.position.y = 28;
@@ -111,7 +104,7 @@ function init() {
     //CABIN
     cabin = new THREE.Mesh(
 	    new THREE.BoxGeometry(33, 13, 24),
-	    new THREE.MeshStandardMaterial({ color: 0xffffff }),
+	    new THREE.MeshLambertMaterial({ color: 0xffffff }),
 	);
 	cabin.position.x = 0;
 	cabin.position.y = 30.5;
@@ -120,7 +113,7 @@ function init() {
 	//CAR EXHAUST
 	cabinExhaust = new THREE.Mesh(
 	    new THREE.BoxGeometry(3, 3, 30),
-	    new THREE.MeshStandardMaterial({ color: 0x383737 }),
+	    new THREE.MeshLambertMaterial({ color: 0x383737 }),
 	);
 	cabinExhaust.position.x = -7;
 	cabinExhaust.position.y = -10;
@@ -129,7 +122,7 @@ function init() {
 	//DIRECTIONAL LEFT CAR
 	directionalLeft = new THREE.Mesh(
 		new THREE.BoxGeometry(6, 6, 1),
-		new THREE.MeshStandardMaterial({ color: 0xF19609})
+		new THREE.MeshLambertMaterial({ color: 0xF19609})
 	);
 	directionalLeft.position.x = -17;
 	directionalLeft.position.y = 25;
@@ -139,7 +132,7 @@ function init() {
 	//RED LIGHT LEFT
 	redLightlLeft = new THREE.Mesh(
 		new THREE.BoxGeometry(6, 6, 1),
-		new THREE.MeshStandardMaterial({ color: 0xce2e2c})
+		new THREE.MeshLambertMaterial({ color: 0xce2e2c})
 	);
 	redLightlLeft.position.x = -11;
 	redLightlLeft.position.y = 25;
@@ -149,7 +142,7 @@ function init() {
 	//WHITE LIGHT RIGHT
 	witheLightlLeft = new THREE.Mesh(
 		new THREE.BoxGeometry(2, 6, 1),
-		new THREE.MeshStandardMaterial({ color: 0xFFFFFF})
+		new THREE.MeshLambertMaterial({ color: 0xFFFFFF})
 	);
 	witheLightlLeft.position.x = -7;
 	witheLightlLeft.position.y = 25;
@@ -160,7 +153,7 @@ function init() {
 	//DIRECTIONAL RIGHT CAR
 	directionalRight = new THREE.Mesh(
 		new THREE.BoxGeometry(6, 6, 1),
-		new THREE.MeshStandardMaterial({ color: 0xF19609})
+		new THREE.MeshLambertMaterial({ color: 0xF19609})
 	);
 	directionalRight.position.x = 17;
 	directionalRight.position.y = 25;
@@ -170,7 +163,7 @@ function init() {
 	//RED LIGHT RIGHT
 	redLightlRight = new THREE.Mesh(
 		new THREE.BoxGeometry(6, 6, 1),
-		new THREE.MeshStandardMaterial({ color: 0xce2e2c})
+		new THREE.MeshLambertMaterial({ color: 0xce2e2c})
 	);
 	redLightlRight.position.x = 11;
 	redLightlRight.position.y = 25;
@@ -180,7 +173,7 @@ function init() {
 	//WHITE LIGHT RIGHT
 	witheLightlRight = new THREE.Mesh(
 		new THREE.BoxGeometry(2, 6, 1),
-		new THREE.MeshStandardMaterial({ color: 0xFFFFFF})
+		new THREE.MeshLambertMaterial({ color: 0xFFFFFF})
 	);
 	witheLightlRight.position.x = 7;
 	witheLightlRight.position.y = 25;
@@ -190,7 +183,7 @@ function init() {
 	//LICENSE PLAQUE
 	plaque = new THREE.Mesh(
 		new THREE.BoxGeometry(13, 6, 1),
-		new THREE.MeshStandardMaterial({ color: 0xFFFFFF})
+		new THREE.MeshLambertMaterial({ color: 0xFFFFFF})
 	);
 	plaque.position.x = 0;
 	plaque.position.y = 15;
@@ -247,4 +240,91 @@ function update() {
         delta = camera.rotation.z;
         camera.rotation.z -= delta / 10;
     }
+
+    originPoint = movingCar.position.clone();
+
+    main = movingCar.getObjectByName('main');
+
+    for (var vertexIndex = 0; vertexIndex < main.geometry.vertices.length; vertexIndex++){
+
+    	var localVertex = main.geometry.vertices[vertexIndex].clone();
+    	var globalVertex = localVertex.applyMatrix4(movingCar.matrix);
+    	var directionVector = globalVertex.sub(main.position);
+    	var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+
+    	//COLLISION
+    	var collisionResults = ray.intersectObjects(collideMeshList);
+        if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
+            crash = true;
+            crashId = collisionResults[0].object.name;
+            break;
+        }
+        crash = false;
+
+    }
+
+    if (crash) {
+        main.material.color.setHex(0x333333);
+        console.log("Crash");
+        if (crashId !== lastCrashId) {
+            lastCrashId = crashId;
+            lives -= 1;
+        }
+
+    } else {
+        main.material.color.setHex(0x0094c6);
+    }
+
+    if (lives == 0) {
+    	console.log('Game Over');
+    }
+
+    if (Math.random() < 0.04 && cubes.length < 30) {
+        box = makeRandomCube();
+    }
+
+    for (i = 0; i < cubes.length; i++) {
+        if (cubes[i].position.z > camera.position.z) {
+            scene.remove(cubes[i]);
+            cubes.splice(i, 1);
+            collideMeshList.splice(i, 1);
+        } else {
+            cubes[i].position.z += 10;
+        }
+    }
+
+    score += 0.1;
+    scoreText.innerText = "Score:" + Math.floor(score);
+}
+
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+
+function makeRandomCube() {
+    var a = 1 * 50,
+        b = getRandomInt(1, 3) * 50,
+        c = 1 * 50;
+    var geometry = new THREE.CubeGeometry(a, b, c);
+    var material = new THREE.MeshLambertMaterial({
+        color: Math.random() * 0xffffff,
+    });
+
+
+    var box = new THREE.Mesh(geometry, material);
+    box.material.color.setHex(Math.random() * 0xffffff);
+
+    box.position.x = getRandomArbitrary(-250, 250);
+    box.position.y = 1 + b / 2;
+    box.position.z = getRandomArbitrary(-800, -1200);
+    cubes.push(box);
+    box.name = "box_" + id;
+    id++;
+    collideMeshList.push(box);
+    scene.add(box);
 }
