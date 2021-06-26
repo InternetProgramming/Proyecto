@@ -9,11 +9,15 @@ var cubes = [];
 var car;
 var crash = false;
 var score = 0;
+var num_crashes = 0;
 var scoreText = document.getElementById("score");
+var livesText = document.getElementById("lives");
+var gameoverText = document.getElementById("gameover");
 var lives = 3;
 var id = 0;
 var crashId = '';
 var lastCrashId = '';
+var end_cubes = false;
 
 init();
 animate();
@@ -203,10 +207,11 @@ function animate() {
 }
 
 function update() {
+	livesText.innerText = "Lives:" + Math.floor(lives);
 	var delta = clock.getDelta();
 	var moveDistance = 200 * delta;
 	var rotateAngle = Math.PI / 2 * delta;
-	if (keyboard.pressed("left") || keyboard.pressed("A")) {
+	if ((keyboard.pressed("left") || keyboard.pressed("A")) && end_cubes == false) {
 		if (movingCar.position.x > -270)
 			movingCar.position.x -= moveDistance;
 		if (camera.position.x > -150) {
@@ -217,7 +222,7 @@ function update() {
 		}
 	}
 
-	if (keyboard.pressed("right") || keyboard.pressed("D")) {
+	if ((keyboard.pressed("right") || keyboard.pressed("D")) && end_cubes == false) {
 		if (movingCar.position.x < 270)
             movingCar.position.x += moveDistance;
         if (camera.position.x < 150) {
@@ -228,10 +233,17 @@ function update() {
         }
 	}
 
-	if (keyboard.pressed("up") || keyboard.pressed("W")) {
+	if ((keyboard.pressed("up") || keyboard.pressed("W")) && end_cubes == false) {
         movingCar.position.z -= moveDistance;
     }
-    if (keyboard.pressed("down") || keyboard.pressed("S")) {
+    if (keyboard.pressed("r") && end_cubes == true) {
+        score = 0;
+        end_cubes = false;
+        lives = 3;
+        livesText.innerText = "Lives:" + Math.floor(lives);
+        gameoverText.innerText = "";
+    }
+    if ((keyboard.pressed("down") || keyboard.pressed("S")) && end_cubes== false) {
         movingCar.position.z += moveDistance;
     }
 
@@ -257,6 +269,7 @@ function update() {
         if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
             crash = true;
             crashId = collisionResults[0].object.name;
+            //lives = lives - 1
             break;
         }
         crash = false;
@@ -268,7 +281,12 @@ function update() {
         console.log("Crash");
         if (crashId !== lastCrashId) {
             lastCrashId = crashId;
-            lives -= 1;
+            num_crashes = num_crashes + 1
+            //crashesText = toString(num_crashes);
+            if (end_cubes == false){
+            	lives -= 1;
+            	livesText.innerText = "Lives:" + Math.floor(lives);
+            }
         }
 
     } else {
@@ -276,10 +294,14 @@ function update() {
     }
 
     if (lives == 0) {
+    	end_cubes = true;
+    	livesText.innerText = "";
+    	gameoverText.innerText = "Game over press r for restar";
     	console.log('Game Over');
+    	
     }
 
-    if (Math.random() < 0.04 && cubes.length < 30) {
+    if (Math.random() < 0.04 && cubes.length < 30 && end_cubes == false) {
         box = makeRandomCube();
     }
 
@@ -293,7 +315,9 @@ function update() {
         }
     }
 
-    score += 0.1;
+    if (end_cubes == false) {
+    	score += 0.1;
+    }
     scoreText.innerText = "Score:" + Math.floor(score);
 }
 
