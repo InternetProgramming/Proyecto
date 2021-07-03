@@ -18,6 +18,7 @@ var num_crashes = 0;
 var scoreText = document.getElementById("score");
 var livesText = document.getElementById("lives");
 var gameoverText = document.getElementById("gameover");
+var form_id = document.getElementById("form_id");
 var lives = 3;
 var id = 0;
 var crashId = '';
@@ -36,7 +37,7 @@ function init() {
 	camera = new THREE.PerspectiveCamera(45, screenWidth / screenHeight, 1, 20000)
 	renderer = new THREE.WebGLRenderer({ antialias: true });
 	camera.position.set(0, 170, 400);
-
+	form_id.hidden = true;
 	//AMBIENTAL LIGHT
 	renderer.setSize(screenWidth * 0.85, screenHeight * 0.85)
 
@@ -247,6 +248,8 @@ function update() {
         lives = 3;
         livesText.innerText = "Lives:" + Math.floor(lives);
         gameoverText.innerText = "";
+		form_id.hidden = true;
+
     }
     if ((keyboard.pressed("down") || keyboard.pressed("S")) && end_cubes== false) {
         movingCar.position.z += moveDistance;
@@ -303,6 +306,7 @@ function update() {
     	livesText.innerText = "";
     	gameoverText.innerText = "Game over press ctrl for restar \nHighscore\nFer " + Math.floor(score1) + "\nFer " + Math.floor(score2) + "\nFer "+ Math.floor(score3) + "\nFer "+ Math.floor(score4) + "\nFer " + Math.floor(score5) + "\n";
     	console.log('Game Over');
+		form_id.hidden = false;
     	
     }
 

@@ -14,6 +14,10 @@
             overflow: hidden;
         }
 
+        form, label, p {
+            color: white !important;
+        }
+
         canvas {
             display: block;
             margin: 0 auto;
@@ -73,6 +77,13 @@
         </div>
         <div class="gameover-container">
             <div id="gameover"></div>
+        </div>
+        <div style="width:800px; margin:0 auto;">
+            <form>
+              <label for="fname">name:</label>
+              <input type="text" id="fname" name="fname"><br><br>
+              <input type="submit" value="Submit">
+            </form>
         </div>
         <script src="js/index.js"></script>
     </body>

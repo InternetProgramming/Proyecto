@@ -78,7 +78,7 @@
         <div class="gameover-container">
             <div id="gameover"></div>
         </div>
-        <div style="width:800px; margin:0 auto;">
+        <div id="form_id" style="width:800px; margin:0 auto;">
             <form>
               <label for="fname">name:</label>
               <input type="text" id="fname" name="fname"><br><br>
