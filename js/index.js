@@ -9,6 +9,11 @@ var cubes = [];
 var car;
 var crash = false;
 var score = 0;
+var score1 = 1000000;
+var score2 = 999050;
+var score3 = 854541;
+var score4 = 784515;
+var score5 = 458745;
 var num_crashes = 0;
 var scoreText = document.getElementById("score");
 var livesText = document.getElementById("lives");
@@ -236,7 +241,7 @@ function update() {
 	if ((keyboard.pressed("up") || keyboard.pressed("W")) && end_cubes == false) {
         movingCar.position.z -= moveDistance;
     }
-    if (keyboard.pressed("r") && end_cubes == true) {
+    if (keyboard.pressed("ctrl") && end_cubes == true) {
         score = 0;
         end_cubes = false;
         lives = 3;
@@ -296,7 +301,7 @@ function update() {
     if (lives == 0) {
     	end_cubes = true;
     	livesText.innerText = "";
-    	gameoverText.innerText = "Game over press r for restar";
+    	gameoverText.innerText = "Game over press ctrl for restar \nHighscore\nFer " + Math.floor(score1) + "\nFer " + Math.floor(score2) + "\nFer "+ Math.floor(score3) + "\nFer "+ Math.floor(score4) + "\nFer " + Math.floor(score5) + "\n";
     	console.log('Game Over');
     	
     }
