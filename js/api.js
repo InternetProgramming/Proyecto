@@ -50,7 +50,7 @@ app.post(base + 'addScore', async (req, res) => {
                 const data = await db.request()
                 .input('name', sql.VarChar, req.body.name)
                 .input('score', sql.Int, req.body.score)
-                .query("INSERT INTO score_board (name, score) OUTPUT Inserted.name VALUES (@name, @score)");
+                .query("INSERT INTO score (name, score) OUTPUT Inserted.name VALUES (@name, @score)");
                 if (data.recordset.length > 0)
                     res.status(200).json({success: 1, message: "Ok", data: data.recordset[0]});
                 else
@@ -69,7 +69,7 @@ app.post(base + 'getScores', async (req, res) => {
     try {
             const data = await db.request()
             .input('idUsuario', sql.Int, req.body.idUsuario)
-            .query("SELECT * FROM score_board ORDER BY score DESC LIMIT 10");
+            .query("SELECT * FROM score ORDER BY score DESC LIMIT 10");
             if (data.recordset.length > 0)
                 res.status(200).json({success: 1, message: "Ok", data: data.recordset});
             else
